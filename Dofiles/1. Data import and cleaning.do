@@ -5,7 +5,7 @@ Date created: 14th Jan 2022
 
 Description: This dofile imports, renames, labels and saves the Angrist Krueger 1991 dataset.
 
-Last edited: 4th Feb 2022, IJPeek
+Last edited: 8th Feb 2022, WHW - I have just changed this woop wooop wooop (8/2/22, thanks so much for the snacks IJPeek)
 
 Sections.
 	1. Import and rename 
