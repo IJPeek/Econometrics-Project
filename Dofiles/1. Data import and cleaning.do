@@ -1,4 +1,3 @@
-
 /*
 Author: Isabelle Peek
 Date created: 14th Jan 2022
@@ -9,10 +8,10 @@ Last edited: 8th Feb 2022, WHW - I have just changed this woop wooop wooop (8/2/
 
 Sections.
 	1. Import and rename 
-	2. 
-
-
+	2. Labeling Variables
 */
+
+
 
 ******************************************************************************
 **						1. Import and rename								**
@@ -93,4 +92,5 @@ Census division
 
 //convention to work in lowercase in stata, lowercase variable names
 rename _all, lower
+
 
