@@ -9,4 +9,7 @@ global temp $file/Data/Temp //where we save any data we have altered from the ra
 global logs $file/Logs
 global output $file/Output
 
-display "$raw"
+
+//EXAMPLE of macro...
+//global teabag "life"
+//display "$teabag"
