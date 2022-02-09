@@ -4,22 +4,17 @@ Date of download: 04/01/2022
 
 Description: Starts by cleaning the data provided by the A&K website
 
-Date of last edits: 05/01/2022
+Date of last edits: 09/02/2022
 
 */
 
-***** Setup and Globals *****
-clear
-clear matrix
-capture log close
-set more off
-* version 17
+*** Calling the data ***
+run "C:\Users\willi\OneDrive\Attachments\Documents\GitHub\Econometrics-Project\Dofiles\_setup_WW.do"
+// this runs the setup to create the global macros that we have defined
 
-* global
+use "$raw/NEW7080.dta", clear
 
-use "C:\Users\willi\OneDrive\___ POSTGRAD\MSc Econ\Metrics Project\NEW7080.dta"
-
-***** Tidying the variables *****
+*** Tidying the variables ***
 // Variable renaming and labelling comes from online information, and also the original A&K 1991 paper. 
 // Have amended variables which I am confident about, and removed some which are not immediately relevant. Further notes below
 
@@ -59,23 +54,7 @@ rename v27 YOB
 	* v21 - SOATL - South Atlantic States
 	* v24 - WNOCENT - West North Central States
 	* V25 - WSOCENT - West South Central States
-// This regional division appears to be based on the Census regions and divisions. But according to Wiki there are 9 of these. The one that is potentially missing is Pacific (Alaska, California, Hawaii, Oregon and Washington). This system is widely used
-
-gen region = 0
-replace region = 1 if v5 == 1
-replace region = 2 if v6 == 1
-replace region = 3 if v11 == 1
-replace region = 4 if v12 == 1
-replace region = 5 if v13 == 1
-replace region = 6 if v21 == 1
-replace region = 7 if v24 == 1
-replace region = 8 if v25 == 1
-label define region 1 "East North Central States" 2  "East South Central States" 3 "Mid-Atlantic States" 4 "Mountain States" 5 "New England States" 6 "South Atlantic States" 7 "West North Central States" 8 "West South Central States"
-label values region region
-// Check what the populations of the regions actually are
-tab region
-	* Must be that the Pacific region does not have a dummy variable, and so whatever is coded as 0 in the new region variable represents observations from Pacific region
-
+// This regional division appears to be based on the Census regions and divisions, which is widely used. But according to Wiki there are 9 of these. The one that is potentially missing is Pacific (Alaska, California, Hawaii, Oregon and Washington).
 rename v5 ENOCENT
 rename v6 ESOCENT
 rename v11 MIDATL
@@ -84,8 +63,40 @@ rename v13 NEWENG
 rename v21 SOATL
 rename v24 WNOCENT
 rename v25 WSOCENT
+
+// Creating variable to summarise the regional distribution
+gen region = 0
+replace region = 1 if ENOCENT == 1
+replace region = 2 if ESOCENT == 1
+replace region = 3 if MIDATL == 1
+replace region = 4 if MT == 1
+replace region = 5 if NEWENG == 1
+replace region = 6 if SOATL == 1
+replace region = 7 if WNOCENT == 1
+replace region = 8 if WSOCENT == 1
+label define region 1 "East North Central States" 2  "East South Central States" 3 "Mid-Atlantic States" 4 "Mountain States" 5 "New England States" 6 "South Atlantic States" 7 "West North Central States" 8 "West South Central States"
+label values region region
+// Check what the populations of the regions actually are
+tab region
+	* Must be that the Pacific States region has a dummy variable which is not named
+	* From observation the variable v15 has 136,084 observations =1, which is exactly the number left over in the new region variable. Thus it appears v15 is a dummy for the Pacific States region
+
+rename v15 Pacific
+replace region = 9 if Pacific == 1
+
+// Must relable the whole variable to amend the Pacific State observations
+label define region_pac 1 "East North Central States" 2  "East South Central States" 3 "Mid-Atlantic States" 4 "Mountain States" 5 "New England States" 6 "South Atlantic States" 7 "West North Central States" 8 "West South Central States" 9 "Pacific States"
+label values region region_pac
+tab region, m // this now looks correct
 	
 order v*, last
+// displays the variables which we still have no names for last
+
+
+
+
+
+
 
 ***** Descriptive Stats *****
 
