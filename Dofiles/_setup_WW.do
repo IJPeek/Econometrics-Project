@@ -1,6 +1,14 @@
-//This dofile is a set up dofile
+// This dofile is a set up dofile
 
-///Users/isabellepeek/Documents/GitHub/github-tutorial
+*** Setup ***
+clear
+clear matrix
+capture log close
+set more off
+* version 17 -- not sure if we want to do this in case other people's are different
+
+*** Globals ***
+// Creating global macros that correspond to our folder structure
 
 global file C:\Users\willi\OneDrive\Attachments\Documents\GitHub\Econometrics-Project
 global dofile $file/Dofiles //where we store our dofiles
@@ -10,4 +18,3 @@ global logs $file/Logs
 global output $file/Output
 
 
-Hey 08/02/2022
