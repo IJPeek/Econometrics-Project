@@ -80,14 +80,12 @@ codebook v17
 codebook v17 if CENSUS==80
 codebook v17 if CENSUS==70
 
-
-	sob
+/*
+sob
 State of birth
-
-
 division
 Census division
-
+*/
 
 
 //convention to work in lowercase in stata, lowercase variable names
