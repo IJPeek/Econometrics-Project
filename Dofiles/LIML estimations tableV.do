@@ -40,4 +40,4 @@ ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl 
 est store all
 
 /*collecting results together*/
-est table basespec agespec locationspec all
+est table basespec agespec locationspec all, b(%7.4f) star
