@@ -9,6 +9,7 @@ Last edited: 8th Feb 2022, WHW - I have just changed this woop wooop wooop (8/2/
 Sections.
 	1. Import and rename 
 	2. Labeling Variables
+	34.htrhtrh
 */
 
 
@@ -17,11 +18,17 @@ Sections.
 **						1. Import and rename								**
 ******************************************************************************
 
+
+
+infile v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 v24 v25 v26 v27 using "$raw/QOB.raw", clear
+save "$raw/QOB.dta"
+
 // a larger dataset on their website use "$raw/NEW7080.dta", clear
 
-use "$raw/NEW7080.dta", clear
 
-//infile v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 v24 v25 v26 v27 using "$raw/QOB.raw", clear
+foreach data in NEW7080 QOB{
+use "$raw/`data'.dta", clear
+
 
 //These are from the AK website RENAMING THE FILE:
 rename v1 AGE
@@ -43,6 +50,12 @@ rename v24 WNOCENT
 rename v25 WSOCENT
 rename v27 YOB
 
+//not from AK but our guess
+rename v22 STATE
+rename v15 PAC
+
+drop v3 v7 v8 v14 v17 v23 v26
+
 
 *******************************************************************************
 **						2. Labeling variables								 **
@@ -53,42 +66,40 @@ rename v27 YOB
 
 label var AGE "Age, measured at quarterly precision"
 label var EDUC "Years of education"
+label var ENOCENT "=1 if respondent is from East North Central States"
+label var ESOCENT "=1 if respondent is from East North Central States"
 label var LWKLYWGE "Log of weekly wage"
-label var MARRIED "Indicator for being married"
+
+label var MARRIED "=1 if respondent is married with his spouse present, Indicator for being married"
+label var MIDATL "=1 if respondent is from Mid-Atlantic States"
+label var MT "=1 if respondent is from Mountain States"
+label var NEWENG "=1 if respondent is from New England States"
+label var PAC "=1 if respondent is from Pacific or other"
+label var CENSUS "Which census the respondent appears in - 1970 or 1980"
 label var QOB "Quarter of birth"
 
-// dont know what race is
 codebook RACE
-	// codebook summarises data
-	// Here we can see it takes on the values of 0 and 1 
-	// The majority of obvs are 0, given this is the US we can conclude 0-w 1-b
-label var RACE "Indicator for being black"
-label var SMSA "SMSA indicator: a geographical region with a relatively high population density"
-// https://en.wikipedia.org/wiki/Metropolitan_statistical_area
+label var RACE "=1 if black, =0 otherwise, Indicator for being black"
+label var SMSA "=1 if respondent works in a city centre i.e. SMSA (Standard Metropolitan Statistical Area). Geographical region with a relatively high population density"
+
 label var YOB "Year of birth"
+label var SOATL "=1 if respondent is from South Atlantic States"
+label var STATE "An index for different states, there are 56"
+label var WNOCENT "=1 if respondent is from West North Central States"
+label var WSOCENT "=1 if respondent is from West South Central States"
 
-codebook CENSUS
-// Two values 70 and 80
 
-
+label var CENSUS "Which census year the data was collected from, 1970 or 1980"
 	// From using the command br, and looking at the data i think:
 label var AGEQ "Age, including months eg age 40.24"
-// Note AGE actually rounds down the AGEQ, we should work out the effect of this and make sure it doesnt skew their results if they use AGE.. the authors do things like age 49.75 and then would round that down to 49 (but then again that is how age works)
 
-codebook v17
-// 99 values
-codebook v17 if CENSUS==80
-codebook v17 if CENSUS==70
-
-/*
-sob
-State of birth
-division
-Census division
-*/
 
 
 //convention to work in lowercase in stata, lowercase variable names
 rename _all, lower
 
+
+save "$temp/`data'.dta", replace
+}
+**************************************************************************
 
