@@ -1,14 +1,12 @@
 
 global file "C:\Users\admin\Documents\GitHub\Econometrics-Project"
-global dofile $file/Dofiles //where we store our dofiles
-global raw $file/Data/Raw //where we store our raw data that we do NOT edit
-global temp $file/Data/Temp //where we save any data we have altered from the raw data 
+global dofile $file/Dofiles 
+global raw $file/Data/Raw 
+global temp $file/Data/Temp
 global logs $file/Logs
 global output $file/Output
 
-display "$raw"
 
-use "$raw/NEW7080.dta", clear
 
  
 
