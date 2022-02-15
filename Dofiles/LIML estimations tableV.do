@@ -1,3 +1,13 @@
+/*
+Author: Marianne Gregory
+Date created: 15/02/22
+
+Description: homoskedastic LIML estimations for Table V cohort 
+
+Last edited: 
+
+
+*/
 ********************************************************************************
 						//LIML ESTIMATOR for table V//
 						//estimator is based on homoskedasticity//
