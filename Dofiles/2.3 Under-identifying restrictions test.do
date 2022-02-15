@@ -14,7 +14,7 @@ use "$temp/QOB.dta", clear
 run "$dofile/1.2 Creating Instrumental variables.do"
 
 * Restricting the observations just to the cohort that we want to consider for Table V analysis
-keep if COHORT>30.00 & COHORT <30.40
+keep if cohort>30.00 & cohort <30.40
 
 
 **********************************************************************
