@@ -136,4 +136,29 @@ _rmdcoll lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soat
 
 
 
+//MARIANNE NOTES ON THE ISSUES AS WELL
+//these are how we would run it but we get multicollinearity problems
+//ivreg2 does suggest where multicollinearity lies but... e.g. see spec2
+/*specification 1*/
+condivreg lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), ar lm interval
+est store basespec
+//this one ivreg2 doesnt even think there is multicollinearity but condivreg does
+
+/*specification 2*/
+condivreg lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), ar lm interval
+est store agespec
+//ivreg2 suggests multicollinearity and drops qtr328 qtr329 from original spec but if we run these having dropped those we still have multicollinearity problems
+condivreg lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr327), ar lm interval
+//it does give an output when you drop ageq and ageqsq 
+
+/*specification 3*/
+condivreg lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), ar lm interval
+est store locationspec
+
+/*specification 4*/
+condivreg lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), ar lm interval
+est store all
+
+
+
 
