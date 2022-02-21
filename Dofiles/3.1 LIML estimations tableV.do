@@ -6,7 +6,6 @@ Description: homoskedastic LIML estimations for Table V cohort
 
 Last edited: 
 
-
 */
 ********************************************************************************
 						//LIML ESTIMATOR for table V//
@@ -41,3 +40,4 @@ est store all
 
 /*collecting results together*/
 est table basespec agespec locationspec all, b(%7.4f) star
+
