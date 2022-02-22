@@ -1,0 +1,31 @@
+{\rtf1\ansi\deff0 {\fonttbl{\f0\fnil Garamond;}}
+{\info {\author .}{\company .}{\title .}}
+\deflang1033\plain\fs20
+{\footer\pard\qc\plain\f0\fs20\chpgn\par}
+{
+{\b\qc\line Specification 1: Pagan-Hall Heteroskedasticity Test }{\par}
+\fs20 {IV heteroskedasticity test(s) using levels of IVs only}\line
+\fs20 {Ho: Disturbance is homoskedastic}\line
+\fs20 {    Pagan-Hall general test statistic   :  45.116  Chi-sq(39) P-value = 0.2315}\line
+
+
+{\b\qc\line Specification 2: Pagan-Hall Heteroskedasticity Test }{\par}
+\fs20 {IV heteroskedasticity test(s) using levels of IVs only}\line
+\fs20 {Ho: Disturbance is homoskedastic}\line
+\fs20 {    Pagan-Hall general test statistic   :  43.291  Chi-sq(39) P-value = 0.2932}\line
+
+
+{\b\qc\line Specification 3: Pagan-Hall Heteroskedasticity Test }{\par}
+\fs20 {IV heteroskedasticity test(s) using levels of IVs only}\line
+\fs20 {Ho: Disturbance is homoskedastic}\line
+\fs20 {    Pagan-Hall general test statistic   : 719.030  Chi-sq(50) P-value = 0.0000}\line
+
+
+{\b\qc\line Specification 4: Pagan-Hall Heteroskedasticity Test }{\par}
+\fs20 {IV heteroskedasticity test(s) using levels of IVs only}\line
+\fs20 {Ho: Disturbance is homoskedastic}\line
+\fs20 {    Pagan-Hall general test statistic   : 739.994  Chi-sq(50) P-value = 0.0000}\line
+
+
+\writepositionforappend
+}}
