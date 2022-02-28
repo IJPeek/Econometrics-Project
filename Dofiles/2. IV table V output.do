@@ -56,7 +56,6 @@ est store ivreg2
 ivregress 2sls lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 est store ivregres
 
-est table ivreg2 ivregres, b(%7.4f) star
 
 /*specification 2*/
 ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
