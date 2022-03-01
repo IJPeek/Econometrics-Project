@@ -98,14 +98,21 @@ putexcel D11 = (e(sargandf))
 * Spec 3 - Location and demographic controls
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 // Underidentification test LM stat = 142.381, p-value = 0.0000
-
 // Sargan statistic (Overidentification) = 22.487, p-value = 0.7995
+
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust
+// K-P LM test stat = 138.565, p-value = 0.0000
+// Hansen J stat = 21.979, p-value = 0.8211
+
 
 * Spec 4 - All controls
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 // Underidentification test LM stat = 45.167, p-value = 0.0212
-
 // Sargan statistic (Overidentification) = 19.299, p-value = 0.8236
+
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust
+// K-P LM test stat = 44.193, p-value = 0.0266
+// Hansen J stat is NOT ESTIMATED. possibly caused by singleton dummy variable
 
 
 **********************************************************************
