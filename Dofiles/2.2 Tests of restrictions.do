@@ -71,6 +71,7 @@ putexcel D10 = (e(sarganp))
 putexcel C11 = "dof"
 putexcel D11 = (e(sargandf))
 
+
 *** Spec 2 - Age controls
 ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 // Underidentification test LM stat = 45.178, p-value = 0.0212
@@ -93,6 +94,11 @@ putexcel C10 = "P-value"
 putexcel D10 = (e(sarganp))
 putexcel C11 = "dof"
 putexcel D11 = (e(sargandf))
+
+*** COLINEAR QUESTION ***
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr3 qtr2 qtr4)
+ivreg2 lwklywge yr20-yr28 (educ= qob)
+ivreg2 lwklywge yr20-yr28 (educ= qtr1 qtr2 qtr3 qtr4)
 
 
 * Spec 3 - Location and demographic controls
