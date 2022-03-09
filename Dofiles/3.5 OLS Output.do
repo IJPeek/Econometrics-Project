@@ -46,3 +46,8 @@ hful lwklywge yr20 yr21 yr22 yr23 yr24 yr25 yr26 yr27 yr28 race married smsa new
 
 
 hful lwklywge yr20 yr21 yr22 yr23 yr24 yr25 yr26 yr27 yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120 qtr121 qtr122 qtr123 qtr124 qtr125 qtr126 qtr127 qtr128 qtr129 qtr220 qtr221 qtr222 qtr223 qtr224 qtr225 qtr226 qtr227 qtr228 qtr229 qtr320 qtr321 qtr322 qtr323 qtr324 qtr325 qtr326 qtr327 qtr328 qtr329 yr20 yr21 yr22 yr23 yr24 yr25 yr26 yr27 yr28)
+
+//spec 3 - removing years and qtr328/ 329 
+hful lwklywge yr20 yr21 yr22 yr23 yr24 yr25 yr26 yr27 yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120 qtr121 qtr122 qtr123 qtr124 qtr125 qtr126 qtr127 qtr128 qtr129 qtr220 qtr221 qtr222 qtr223 qtr224 qtr225 qtr226 qtr227 qtr228 qtr229 qtr320 qtr321 qtr322 qtr323 qtr324 qtr325 qtr326 qtr327)
+
+
