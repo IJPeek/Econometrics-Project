@@ -1,13 +1,22 @@
-/*1. Data Generating Process Set up
-2. Writing Program to repeat estimation- IV2
+/*
+ 
+Author: Aimilia and Izzy
+Description: Monte Carlo Simulation for IV with many instruments
+// Source : https://learneconometrics.com/pdf/MCstata/MCstata.pdf
+
+Content
+
+
+
+1. Data Generating Process Set up
+2. Writing Program to repeat estimation- 
 */
 
+
+********************* 10  Variables
 *******************************************************************************
 ******* 		Data Generating Process Set up
 *******************************************************************************
-//run "$dofile/1.2 Creating Instrumental variables.do"
-
-//keep if cohort>30.00 & cohort<30.40
 
 clear all
 // Setting Macros. Number of observations
@@ -23,7 +32,7 @@ set seed 10101
 	 // Reduced form
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
 // scalar gam1 = 1 /* instrument strength */
@@ -66,6 +75,12 @@ replace x=x1
 drop x1
 }
 
+gen x1= x + rho*u + rnormal(0,sige) 
+replace x=x1
+drop x1
+
+
+
 replace y=slope*x+u
 reg y x
 scalar b = _b[x]
@@ -91,10 +106,10 @@ end
  use results, clear
  summarize
  histogram biv, freq normal title("Strong Instrument ") yscale(range(0 80)) 
- graph save "$output/MC_2SLS_Strong.gph", replace 
+ graph save "$output/Many_MC_2SLS_Strong.gph", replace 
  
  histogram b, freq normal title("OLS Coefficients")  yscale(range(0 80))
- graph save "$output/MC_OLS.gph", replace
+ graph save "$output/Many_MC_OLS.gph", replace
  
  
 *******************************************************************************
@@ -116,7 +131,7 @@ set seed 10101
 	 // Reduced form
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  scalar gam = 0.1 /* instrument strength */
