@@ -24,20 +24,21 @@ keep if cohort>30.00 & cohort <30.40
 
 /*specification 1*/
 ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), liml
-est store basespec
+outreg2 using 3.1LIML_output.doc, ci replace ctitle(Specification 1: LIML) excel
+
 
 /*specification 2*/
 ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), liml
-est store agespec
+outreg2 using 3.1LIML_output.doc, ci append ctitle(Specification 2: LIML) excel
+
 
 /*specification 3*/
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), liml
-est store locationspec
+outreg2 using 3.1LIML_output.doc, ci append ctitle(Specification 3: LIML) excel
+
 
 /*specification 4*/
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), liml
-est store all
+outreg2 using 3.1LIML_output.doc, ci append ctitle(Specification 4: LIML) excel
 
-/*collecting results together*/
-est table basespec agespec locationspec all, b(%7.4f) star
 
