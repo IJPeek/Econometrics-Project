@@ -4,7 +4,7 @@ Date created: 16th Feb. 2022
 
 Description: This dofile performs a test of weak instruments on the AK Data set to be used throughout this project.
 
-Last edited: 21st Feb 2022, E. M. Bennett 
+Last edited: 9th March 2022, E. M. Bennett 
 
 
 Sections.
@@ -33,7 +33,9 @@ ssc install ranktest
 **                 2. Olea/Pflueger test for Weak Instruments				**
 **                    & Generating Descriptive Tables  		  	 		    **
 ******************************************************************************
+run "$dofile/1.2 Creating Instrumental variables.do"
 
+keep if cohort>30.00 & cohort<30.40
 **Specification 1**
 ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 weakivtest  
