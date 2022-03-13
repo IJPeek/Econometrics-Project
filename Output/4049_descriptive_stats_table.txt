@@ -1,0 +1,22 @@
+		(1)	(2)	(3)	(4)	(5)
+VARIABLES	LABELS	N	mean	sd	min	max
+						
+age	Age, measured at quarterly precision	486,926	34.32	2.874	30	40
+educ	Years of education	486,926	13.57	2.980	0	20
+enocent	=1 if respondent is from East North Central States	486,926	0.195	0.396	0	1
+esocent	=1 if respondent is from East North Central States	486,926	0.0664	0.249	0	1
+lwklywge	Log of weekly wage	486,926	5.797	0.645	-2.342	11.23
+married	=1 if respondent is married with his spouse present, Indicator for being married	486,926	0.804	0.397	0	1
+midatl	=1 if respondent is from Mid-Atlantic States	486,926	0.151	0.358	0	1
+mt	=1 if respondent is from Mountain States	486,926	0.0524	0.223	0	1
+neweng	=1 if respondent is from New England States	486,926	0.0567	0.231	0	1
+pac	=1 if respondent is from Pacific or other	486,926	0.130	0.337	0	1
+census	Which census year the data was collected from, 1970 or 1980	486,926	80	0	80	80
+qob	Quarter of birth	486,926	2.537	1.115	1	4
+race	=1 if black, =0 otherwise, Indicator for being black	486,926	0.0816	0.274	0	1
+smsa	=1 if respondent works in a city centre i.e. SMSA (Standard Metropolitan Statist	486,926	0.185	0.389	0	1
+soatl	=1 if respondent is from South Atlantic States	486,926	0.171	0.377	0	1
+state	An index for different states, there are 56	486,926	28.77	15.34	1	56
+wnocent	=1 if respondent is from West North Central States	486,926	0.0783	0.269	0	1
+wsocent	=1 if respondent is from West South Central States	486,926	0.0988	0.298	0	1
+						
