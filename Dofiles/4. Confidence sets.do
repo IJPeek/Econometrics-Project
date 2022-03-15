@@ -12,10 +12,34 @@ ssc install ivreg2
 ssc install weakiv 
 ** install avar 
 ssc install avar
+** install outreg2 and asdoc
+ssc install outreg2 
+ssc install asdoc 
 
 ** NOTE - REMOVE YR20-YR28 **
 **Specification 1** 
+ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr)
+** export output table to excel 
+ereturn list 
+** set where the excel file goes 
+putexcel set $output/5.3_CLR 
+putexcel A1 = "Confidence Set for Specification 1", bold 
+putexcel A4 = "Specification 1"
+putexcel B3 = "Confidence Level"
+putexcel B4 = (e(level))
+putexcel C3 = "CLR Confidence Set"
+putexcel C4 = (e(clr_cset))
+
+putexcel set $output/2.2_tests.xlsx, modify sheet("Spec 1 - Base")
+putexcel A1 = "Test of restrictions for Specification 1 - Base", bold
+putexcel B3 = "Test for Underidentification (i.e. Rank Condition)"
+putexcel C4 = "Underidentification test Anderson LM statistic"
+putexcel D4 = (e(idstat))
+putexcel C5 = "P-value"
+putexcel D5 = (e(idp))
+putexcel C6 = "dof"
+putexcel D6 = (e(iddf))
 
 **Specification 2**
 weakiv ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr)
