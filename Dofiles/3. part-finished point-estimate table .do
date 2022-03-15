@@ -17,7 +17,7 @@ keep if cohort>30.00 & cohort <30.40
 ********************************************************************************
 
 
-putexcel set $point_estimates_output_tableV.xlsx, replace
+putexcel set $output/point_estimates_output_tableV.xlsx, replace
 putexcel B1 = "Point Estimates (Table V)"
 putexcel B2 = "Estimator:"
 putexcel C2 = "OLS"
