@@ -18,7 +18,7 @@ ssc install asdoc
 
 ** NOTE - REMOVE YR20-YR28 **
 **Specification 1** 
-weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr)
 
 ** export output table to excel 
 ereturn list 
@@ -33,14 +33,10 @@ putexcel C4 = (e(clr_cset))
 
 ssc install regsave
 
-ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
-regsave, ci 
-list 
-ereturn list 
-
 **Specification 2**
 weakiv ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 ** note get infinite conf set for K-LM, we're not going to interpret this so shouldn't be an issue 
+** if i add graph option here I get a confidence set that covers the entire grip <- v odd
 ereturn list 
 putexcel set $output/5.3_CLR_confidence_set.xlsx, modify 
 putexcel A5 = "Specification 2"
