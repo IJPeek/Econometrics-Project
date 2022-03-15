@@ -14,7 +14,8 @@ Last edited:
 ********************************************************************************
 
 
-
+//create all the instruments and loading data
+run "$dofile/1.2 Creating Instrumental variables.do"
 
 
 //select correct cohort//
