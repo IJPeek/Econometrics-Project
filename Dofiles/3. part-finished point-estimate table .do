@@ -3,7 +3,7 @@
 
 						//trying to create intext output table for educ point estimates
 						//not sure how to get confidence intervals etc. in there
-						//probably im doing it wrong
+						//probably im doing it wrong but trying to be helpful!
 ********************************************************************************
 
 
