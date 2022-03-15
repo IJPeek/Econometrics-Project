@@ -1,4 +1,3 @@
-
 // Preliminary code before dofile
 
 ******************************************************************************
@@ -98,3 +97,6 @@ gen QTR327= QTR3*YR27
 gen QTR328= QTR3*YR28
 gen QTR329= QTR3*YR29
 rename _all, lower
+
+
+keep if cohort>30.00 & cohort<30.40

@@ -1,6 +1,8 @@
 ** 4 Confidence Sets - AR, LM & CLR
 
 ** Run 1.2 Creating Instrument 
+run "$dofile/1.2 Creating Instrumental variables.do"
+
 ** select correct cohort 
 keep if cohort>30.00 & cohort <30.40
 
@@ -11,23 +13,25 @@ ssc install weakiv
 ** install avar 
 ssc install avar
 
+** NOTE - REMOVE YR20-YR28 **
 **Specification 1** 
-weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr)
 
 **Specification 2**
-weakiv ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+weakiv ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr)
 ** note get infinite conf set for K-LM, we're not going to interpret this so shouldn't be an issue 
 
 **Specification 3**
-weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust
+weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust graph(clr) 
 *using robust option here - do we want to check if using the robust option changes results in spec 1 & 2? 
 
 **Specification 4**
-weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust 
-** problem here that the conf set covers the entire grid - need to figure out how to interpret this or how to deal with this 
+weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust graph(clr) 
+** problem here that the conf set covers the entire grid - need to figure out how to interpret this 
 ** p values are also very high 
 ** could indicate an issue with identification? 
 ** option usegrid doesn't change this, neither does changing the number of gridpoints to 25 
+** when you drop robust, you get confidence sets for CLR and K-LM 
 
 ** try twostepweakiv 
 ssc install moremata

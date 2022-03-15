@@ -110,7 +110,7 @@ ssc install asdoc
  
 
 **Specification 1**
-ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 outreg2 using stata_outputs.doc, replace ctitle(Specification 1: 2SLS)
 
 ivhettest
@@ -119,7 +119,7 @@ asdoc ivhettest, save(het_tests.doc) title(Specification 1: Pagan-Hall Heteroske
 
 
 **Specification 2**
-ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 outreg2 using stata_outputs.doc, append ctitle(Specification 2: 2SLS)
 
 ivhettest
@@ -127,16 +127,21 @@ asdoc ivhettest, title(Specification 2: Pagan-Hall Heteroskedasticity Test) appe
 
 
 **Specification 3**
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
-outreg2 using stata_outputs.doc, append ctitle(Specification 3: 2SLS)
-
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 ivhettest
 asdoc ivhettest, title(Specification 3: Pagan-Hall Heteroskedasticity Test) append
 
-**Specification 4**
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
-outreg2 using stata_outputs.doc, append ctitle(Specification 4: 2SLS)
+//We find heteroskedasticity so we report the robust version in our results
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust
+outreg2 using stata_outputs.doc, append ctitle(Specification 3: 2SLS robust)
 
+
+**Specification 4**
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 ivhettest
 asdoc ivhettest, title(Specification 4: Pagan-Hall Heteroskedasticity Test) append
+
+//We find heteroskedasticity so we report the robust version in our results. For spec 4 we use the partial out option to avoid collinearity problems. 
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust partial(ageq ageqsq)
+outreg2 using stata_outputs.doc, append ctitle(Specification 4: 2SLS robust)
 

@@ -8,7 +8,7 @@ Description: Tests for both over and under-identifying assumptions of the 2SLS s
 				- Create output using putexcel commands, becasue 'asdoc' and 'outreg' do not work for this type of result 
 
 
-Last edited: 08/03/2022
+Last edited: 10/03/2022
 
 */
 
@@ -48,6 +48,7 @@ ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocen
 ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 
 	- We won't run these as the command does not include all the tests that we want to know about
+	- Also note that when using ivreg2 there is no need to state the included instruments i.e. yr20-yr28 within the brackets, and so to improve computational efficiency we will remove these
 */
 
 ********** Reressions that we want to do using ivreg2 instead **********
@@ -56,7 +57,7 @@ ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocen
 *** Spec 1 - Base ***
 *********************
 * Assuming Homoskedasticty
-ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 // Underidentification test LM stat = 147.164, p-value = 0.0000
 // Sargan statistic (Overidentification) = 25.439, p-value = 0.6553
 ereturn list
@@ -79,7 +80,7 @@ putexcel C11 = "dof"
 putexcel D11 = (e(sargandf))
 
 * Allowing for Heteroskedasticity
-ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust
+ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust
 // K-P LM test stat = 143.863, p-value = 0.0000
 // Hansen J stat = 24.653, p-value = 0.6961
 ereturn list
@@ -103,7 +104,7 @@ putexcel D22 = (e(jdf))
 *** Spec 2 - Age controls ***
 *****************************
 * Assuming Homoskedasticty
-ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 // Underidentification test LM stat = 45.178, p-value = 0.0212
 // Sargan statistic (Overidentification) = 22.853, p-value = 0.6412
 ereturn list
@@ -126,7 +127,7 @@ putexcel C11 = "dof"
 putexcel D11 = (e(sargandf))
 
 * Allowing for Heteroskedasticity
-ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust partial(ageq ageqsq)
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust partial(ageq ageqsq)
 * NOTE: partial option used to avoid errors with J-stat. By FWL Theorem this should have no effect on coefficients
 // K-P LM test stat = 44.545, p-value = 0.0245
 // Hansen J stat = 22.467, p-value = 0.7133
@@ -153,7 +154,7 @@ putexcel B23 = "NOTE: Partial option used for ageq and agesq"
 **************************************************
 
 * Assuming Homoskedasticty
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 // Underidentification test LM stat = 142.381, p-value = 0.0000
 // Sargan statistic (Overidentification) = 22.487, p-value = 0.7995
 ereturn list
@@ -176,7 +177,7 @@ putexcel C11 = "dof"
 putexcel D11 = (e(sargandf))
 
 * Allowing for Heteroskedasticity
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust
 // K-P LM test stat = 138.565, p-value = 0.0000
 // Hansen J stat = 21.979, p-value = 0.8211
 ereturn list
@@ -200,7 +201,7 @@ putexcel D22 = (e(jdf))
 *** Spec 4 - All controls ***
 *****************************
 * Assuming Homoskedasticty
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 // Underidentification test LM stat = 45.167, p-value = 0.0212
 // Sargan statistic (Overidentification) = 19.299, p-value = 0.8236
 ereturn list
@@ -223,7 +224,7 @@ putexcel C11 = "dof"
 putexcel D11 = (e(sargandf))
 
 * Allowing for Heteroskedasticity
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28), robust partial(ageq ageqsq)
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust partial(ageq ageqsq)
 * NOTE: partial option used to avoid errors with J-stat. By FWL Theorem this should have no effect on coefficients
 // K-P LM test stat = 44.193, p-value = 0.0266
 // Hansen J stat = 19.184, p-value = 0.8632
