@@ -23,12 +23,12 @@ outreg2 using $output/reg_output.doc, ci append ctitle(Specification 2) excel
 
 
 /*specification 3*/
-reg lwklywge educ yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt 
+reg lwklywge educ yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt, robust 
 outreg2 using $output/reg_output.doc, ci append ctitle(Specification 3) excel
 
 
 /*specification 4*/
-reg lwklywge educ yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq
+reg lwklywge educ yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq, robust
 outreg2 using $output/reg_output.doc, ci append ctitle(Specification 4) excel
 
 
