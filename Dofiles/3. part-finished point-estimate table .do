@@ -30,6 +30,7 @@ putexcel H2 = "HFUL"
 //spec1
 putexcel B3 = "Spec 1: educ"
 reg lwklywge educ yr20-yr28
+ereturn list 
 putexcel C3 = _b[educ]
 //confidence interval?
 ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
