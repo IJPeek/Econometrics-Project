@@ -16,7 +16,7 @@ outreg2 using stata_FULL.doc, replace ctitle(Specification 1: FULLER(1))
 ivhettest
 
 **Specification 2**
-ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), fuller(1)
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), fuller(1) partial(ageq ageqsq)
 outreg2 using stata_FULL.doc, append ctitle(Specification 2: FULLER(1))
 
 ivhettest
