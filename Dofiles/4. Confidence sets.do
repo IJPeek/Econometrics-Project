@@ -18,7 +18,7 @@ ssc install asdoc
 
 ** NOTE - REMOVE YR20-YR28 **
 **Specification 1** 
-weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr)
+weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 
 ** export output table to excel 
 ereturn list 
@@ -31,18 +31,23 @@ putexcel B4 = (e(level))
 putexcel C3 = "CLR Confidence Set"
 putexcel C4 = (e(clr_cset))
 
-ssc install regsave
+** graph **
+weakiv ivreg2 lwklywge yr20-yr28 (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr)
+
 
 **Specification 2**
 weakiv ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 ** note get infinite conf set for K-LM, we're not going to interpret this so shouldn't be an issue 
-** if i add graph option here I get a confidence set that covers the entire grip <- v odd
+
 ereturn list 
 putexcel set $output/5.3_CLR_confidence_set.xlsx, modify 
 putexcel A5 = "Specification 2"
 putexcel B5 = (e(level))
 putexcel C5 = (e(clr_cset))
 
+** graph **
+weakiv ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), graph(clr) 
+** if i add graph option here I get a confidence set that covers the entire grip <- v odd
 
 **Specification 3**
 weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust 
@@ -52,20 +57,26 @@ putexcel A6 = "Specification 3"
 putexcel B6 = (e(level))
 putexcel C6 = (e(clr_cset))
 
+** graph **
+weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust graph(clr) 
 
 **Specification 4**
-weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust graph(clr) 
-** problem here that the conf set covers the entire grid - need to figure out how to interpret this 
-** p values are also very high 
-** could indicate an issue with identification? 
-** option usegrid doesn't change this, neither does changing the number of gridpoints to 25 
-** when you drop robust, you get confidence sets for CLR and K-LM 
+weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust 
+ 
 ereturn list 
 putexcel set $output/5.3_CLR_confidence_set.xlsx, modify 
 putexcel A7 = "Specification 4"
 putexcel B7 = (e(level))
 putexcel C7 = (e(clr_cset))
 
+
+** graph **
+weakiv ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust graph(clr) 
+
+
+*************************************************
+****  DON'T USE - DELETE BEFORE SUBMITTING   ****
+*************************************************
 
 ** try twostepweakiv 
 ssc install moremata
