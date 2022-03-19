@@ -18,10 +18,12 @@ Content
 ******* 		Data Generating Process Set up
 *******************************************************************************
 
+
+	// STRONG INSTRUMENT, 10 INSTUMENTS
 clear all
 // Setting Macros. Number of observations
 global nobs = 1000
-global nmc = 1000
+global nmc = 10000
 
 // Setting out seed for randomisation
 set seed 10101
@@ -75,11 +77,6 @@ replace x=x1
 drop x1
 }
 
-gen x1= x + rho*u + rnormal(0,sige) 
-replace x=x1
-drop x1
-
-
 
 replace y=slope*x+u
 reg y x
@@ -105,13 +102,16 @@ end
  regIV
  use results, clear
  summarize
- histogram biv, freq normal title("Strong Instrument ") yscale(range(0 80)) 
- graph save "$output/Many_MC_2SLS_Strong.gph", replace 
+ histogram biv, freq normal title("Strong Instrument, 10 ") yscale(range(0 80)) 
+ graph save "$output/MC_2SLS_Strong_10.gph", replace 
  
  histogram b, freq normal title("OLS Coefficients")  yscale(range(0 80))
  graph save "$output/Many_MC_OLS.gph", replace
+
  
  
+ 
+/* 					//????? 1 INSTRUMENRT
 *******************************************************************************
 ******* 		Weaker Instruments
 *******************************************************************************
@@ -182,13 +182,14 @@ end
  histogram biv, freq normal title("Weaker Instrument- K2=1")  yscale(range(0 80))
  graph save "$output/MC_MI_2SLS_Weak_ONE_INSTR.gph", replace
  
+ */
  
- 
+		//WEAK INSTRUMENT, gam=0.1, 10 INSTRUMENTs
  **10 Instruments case**
  clear all
 // Setting Macros. Number of observations
 global nobs = 1000
-global nmc = 1000
+global nmc = 10000
 
 // Setting out seed for randomisation
 set seed 10101
@@ -198,12 +199,12 @@ set seed 10101
 
 	 // Reduced form
  scalar slope = 1 /* regression slope */
- scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sigma = 10 /* error in y */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  forvalues x=1/10{
- scalar gam`x'= 1
+ scalar gam`x'= 0.1
  }
  //scalar gam = 0.1 /* instrument strength */
  scalar rho = 0.5 /* Including this rho creates our endogenity issue, it measures the strength of the error in the reduced form equation having an impact on x in the structural equation */
@@ -263,12 +264,12 @@ end
  histogram biv, freq normal title("Weaker Instrument- K2=10")  yscale(range(0 80))
  graph save "$output/MC_MI_2SLS_Weak_TEN_INSTR.gph", replace
  
- 
+ //WEAK INSTRUMENT, gam=0.1, 30 INSTRUMENTs
   **30 Instruments case**
  clear all
 // Setting Macros. Number of observations
 global nobs = 1000
-global nmc = 1000
+global nmc = 10000
 
 // Setting out seed for randomisation
 set seed 10101
@@ -278,12 +279,12 @@ set seed 10101
 
 	 // Reduced form
  scalar slope = 1 /* regression slope */
- scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sigma = 30 /* error in y */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  forvalues x=1/30{
- scalar gam`x'= 1
+ scalar gam`x'= 0.1
  }
  //scalar gam = 0.1 /* instrument strength */
  scalar rho = 0.5 /* Including this rho creates our endogenity issue, it measures the strength of the error in the reduced form equation having an impact on x in the structural equation */
@@ -343,12 +344,12 @@ end
  histogram biv, freq normal title("Weaker Instrument- K2=30")  yscale(range(0 80))
  graph save "$output/MC_MI_2SLS_Weak_30_INSTR.gph", replace
 
- 
+ //WEAK INSTRUMENT, gam=0.1, 100 INSTRUMENTs
   **100 Instruments case**
  clear all
 // Setting Macros. Number of observations
 global nobs = 1000
-global nmc = 1000
+global nmc = 10000
 
 // Setting out seed for randomisation
 set seed 10101
@@ -358,12 +359,12 @@ set seed 10101
 
 	 // Reduced form
  scalar slope = 1 /* regression slope */
- scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sigma = 100 /* error in y */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  forvalues x=1/100{
- scalar gam`x'= 1
+ scalar gam`x'= .1
  }
  //scalar gam = 0.1 /* instrument strength */
  scalar rho = 0.5 /* Including this rho creates our endogenity issue, it measures the strength of the error in the reduced form equation having an impact on x in the structural equation */
@@ -424,7 +425,10 @@ end
  graph save "$output/MC_MI_2SLS_Weak_100_INSTR.gph", replace
  
  
- 
+gr combine $output/MC_OLS.gph $output/MC_MI_2SLS_Weak_TEN_INSTR.gph $output/MC_MI_2SLS_Weak_30_INSTR.gph $output/MC_MI_2SLS_Weak_100_INSTR.gph, col(2) title("2SLS Monte Carlos with weak instruments") saving(charts1, replace)
+
+
+ /*
  *******************************************************************************
 ******* 		Weakest Instruments
 *******************************************************************************
@@ -494,8 +498,7 @@ end
  histogram biv, freq normal title("Weakest Instrument ")   yscale(range(0 80))
  graph save "$output/MC_2SLS_Weakest.gph", replace
  
- 
+*/
   
-gr combine $output/MC_OLS.gph $output/MC_2SLS_Strong.gph $output/MC_MI_2SLS_Weak_ONE_INSTR.gph $output/MC_MI_2SLS_Weak_TEN_INSTR.gph $output/MC_MI_2SLS_Weak_30_INSTR.gph $output/MC_MI_2SLS_Weak_100_INSTR.gph $output/MC_2SLS_Weakest.gph, col(2) title("2SLS Monte Carlos with weak instruments") saving(charts1, replace)
 
-graph export "$output/2SLS Bias Graphs.pdf", replace
+graph export "$output/2SLS Bias Many Instruments Graphs.pdf", replace
