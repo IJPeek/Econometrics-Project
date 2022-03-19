@@ -106,7 +106,6 @@ keep if cohort>30.00 & cohort<30.40
 ssc install ivreg2
 ssc install ivhettest
 ssc install outreg2
-ssc install asdoc
  
 
 **Specification 1**
@@ -114,22 +113,16 @@ ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 outreg2 using stata_outputs.doc, replace ctitle(Specification 1: 2SLS)
 
 ivhettest
-//sysuse auto, clear
-asdoc ivhettest, save(het_tests.doc) title(Specification 1: Pagan-Hall Heteroskedasticity Test)
-
 
 **Specification 2**
-ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), partial(ageq ageqsq)
 outreg2 using stata_outputs.doc, append ctitle(Specification 2: 2SLS)
 
 ivhettest
-asdoc ivhettest, title(Specification 2: Pagan-Hall Heteroskedasticity Test) append
-
 
 **Specification 3**
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 ivhettest
-asdoc ivhettest, title(Specification 3: Pagan-Hall Heteroskedasticity Test) append
 
 //We find heteroskedasticity so we report the robust version in our results
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust
