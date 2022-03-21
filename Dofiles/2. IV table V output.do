@@ -18,6 +18,8 @@ Last edited:
 run "$dofile/1.2 Creating Instrumental variables.do"
 
 
+//install ivreg2 
+
 //select correct cohort//
 keep if cohort>30.00 & cohort <30.40
 
