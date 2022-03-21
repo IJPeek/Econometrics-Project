@@ -98,30 +98,36 @@ gen QTR329= QTR3*YR29
 rename _all, lower
 
 
+**We keep only the cohort of interest
 keep if cohort>30.00 & cohort<30.40
 
 **********************************************************************************
-*********************~ White Test for Heteroskedasticity ~************************
+*********************~ White Tests for Heteroskedasticity ~************************
 **********************************************************************************
 ssc install ivreg2
 ssc install ivhettest
 ssc install outreg2
- 
+
+//Note that for specifications 2 and 4 we partial out ageq and agesq 
 
 **Specification 1**
 ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 outreg2 using stata_outputs.doc, replace ctitle(Specification 1: 2SLS)
 
+//Test for heteroskedasticity
 ivhettest
 
 **Specification 2**
 ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), partial(ageq ageqsq)
 outreg2 using stata_outputs.doc, append ctitle(Specification 2: 2SLS)
 
+//Test for heteroskedasticity
 ivhettest
 
 **Specification 3**
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+
+//Test for heteroskedasticity
 ivhettest
 
 //We find heteroskedasticity so we report the robust version in our results
@@ -131,8 +137,9 @@ outreg2 using stata_outputs.doc, append ctitle(Specification 3: 2SLS robust)
 
 **Specification 4**
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+
+//Test for heteroskedasticity
 ivhettest
-asdoc ivhettest, title(Specification 4: Pagan-Hall Heteroskedasticity Test) append
 
 //We find heteroskedasticity so we report the robust version in our results. For spec 4 we use the partial out option to avoid collinearity problems. 
 ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust partial(ageq ageqsq)
