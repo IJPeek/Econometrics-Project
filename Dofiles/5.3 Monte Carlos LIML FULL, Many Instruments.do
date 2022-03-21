@@ -1,7 +1,4 @@
-/* Comparing FULL and LIML
-
-
-*/
+** Comparing FULL and LIML
 
 ********************* 10  Variables
 *******************************************************************************
@@ -84,7 +81,31 @@ end
 
  regIV 
  use results, clear
- summarize
+ summarize b, d
+ 
+ 
+ putexcel set $output/Monte_Carlos_Many.xlsx, modify
+putexcel C1 = "Strongest Instrument 10"
+putexcel B2 = "LIML Mean"
+putexcel B3 = "FULL Mean"
+putexcel B4 = "LIML SD"
+putexcel B5 = "FULL SD"
+putexcel B6 = "LIML Median"
+
+putexcel D1 = "Weaker Instument"
+
+// LIML output
+putexcel C2 = `r(mean)'
+putexcel C4 = `r(sd)'
+putexcel C6 = `r(p50)'
+
+ summarize bful
+
+// FULL output
+putexcel C3 = `r(mean)'
+putexcel C5 = `r(sd)'
+ 
+ 
  
  
  histogram b, freq normal title("LIML-Strong Instrument, 10 ")  yscale(range(0 80))
@@ -99,7 +120,7 @@ end
  **10 Instruments case**
  clear all
 // Setting Macros. Number of observations
-global nobs = 1000
+global nobs = 10000
 global nmc = 1000
 
 // Setting out seed for randomisation
@@ -164,7 +185,16 @@ end
 
  regIV
  use results, clear
- summarize
+ summarize b, d
+
+putexcel D1 = "Weaker Instruments, 10"
+putexcel D2 = `r(mean)'
+putexcel D4 = `r(sd)'
+putexcel D6 = `r(p50)'
+
+ summarize bful
+putexcel D3 = `r(mean)'
+putexcel D5 = `r(sd)'
  
 
  histogram b, freq normal title("LIML-Weaker Instrument, 10 ")  yscale(range(0 80))
@@ -173,11 +203,10 @@ end
  histogram bful, freq normal title("FULL-Weaker Instrument, 10 ") yscale(range(0 80)) 
  graph save "$output/Monte_Carlos/MC_Many_FULLER1-Weaker_10.gph", replace 
  
- sum, d
  //LIML mean.   .62269 median 1.032
  //FULLER1 mean 1.16 median 1.23
   
- 
+ *******************************************************************************
  //WEAK INSTRUMENT, gam=0.1, 30 INSTRUMENTs
   **30 Instruments case**
  clear all
@@ -248,7 +277,17 @@ end
 
  regIV
  use results, clear
- summarize, d
+  summarize b, d
+
+putexcel E1 = "Weak Instruments, 30"
+putexcel E2 = `r(mean)'
+putexcel E4 = `r(sd)'
+putexcel E6 = `r(p50)'
+
+ summarize bful
+putexcel E3 = `r(mean)'
+putexcel E5 = `r(sd)'
+ 
  
  // LIML mean  .1744597 median  1.061071   
  // FULL mean 1.752715 median  1.612516  
@@ -260,7 +299,7 @@ end
  histogram bful, freq normal title("FULL-Weaker Instrument, K2=30 ") yscale(range(0 80)) 
  graph save "$output/Monte_Carlos/MC_Many_FULLER1-Weaker_30.gph", replace 
  
-
+********************************************************************************
  //WEAK INSTRUMENT, gam=0.1, 100 INSTRUMENTs
   **100 Instruments case**
  clear all
@@ -340,7 +379,7 @@ end
  histogram bful, freq normal title("FULL-Weaker Instrument, K2=100 ") yscale(range(0 80)) 
  graph save "$output/Monte_Carlos/MC_Many_FULLER1-Weaker_100.gph", replace 
  
-
+/*
 gr combine $output/Monte_Carlos/MC_Many_LIML-STRONG_10.gph $output/Monte_Carlos/MC_Many_LIML-Weaker_10.gph $output/Monte_Carlos/MC_Many_LIML-Weaker_30.gph $output/Monte_Carlos/MC_Many_LIML-Weaker_100.gph, col(2) title("LIML Monte Carlos increasing instruments") saving(charts1, replace)
 graph export "$output/LIML Bias Many Instruments Graphs.pdf", replace
 
@@ -350,6 +389,8 @@ graph export "$output/LIML Bias Many Instruments Graphs.pdf", replace
 gr combine $output/Monte_Carlos/MC_Many_FULLER1-STRONG_10.gph $output/Monte_Carlos/MC_Many_FULLER1-Weaker_10.gph 
 $output/Monte_Carlos/MC_Many_FULLER1-Weaker_30.gph $output/Monte_Carlos/MC_Many_FULLER1-Weaker_100.gph, col(2) title("FULL Monte Carlos increasing instruments") saving(charts1, replace)
 graph export "$output/FULL Bias Many Instruments Graphs.pdf", replace
+*/
+
 /* Comparing FULL and LIML
 
 
