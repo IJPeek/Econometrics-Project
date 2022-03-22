@@ -2,7 +2,7 @@
 
 Description: This dofile imports, renames, labels and saves the Angrist Krueger 1991 datasets.
 
-Sections.
+Sections:
 	1. Import and rename 
 	2. Labeling Variables
 	3. Creating Variables (AK DoFiles) and saving datasets
@@ -10,9 +10,9 @@ Sections.
 
 
 
-******************************************************************************
-**						1. Import and rename								**
-******************************************************************************
+******************************************
+********** 1. Import and rename **********							**
+******************************************
 
 // Imports raw data from https://economics.mit.edu/faculty/angrist/data1/data/angkru1991 
 clear
@@ -47,9 +47,9 @@ drop v3 v7 v8 v14 v17 v23 v26
 
 
 
-*******************************************************************************
-**						2. Labeling variables								 **
-******************************************************************************
+**********************************************
+*********	2. Labeling variables	**********
+**********************************************
 
 
 // used descritptions of some labels from https://rdrr.io/github/kolesarm/ManyIV/man/ak80.html
@@ -84,9 +84,9 @@ label var CENSUS "Which census year the data was collected from, 1970 or 1980"
 label var AGEQ "Age, including months eg age 40.24"
 
 
-******************************************************************************
-** 		 3. Creating Variables (AK DoFiles) and saving datasets				**
-******************************************************************************
+***************************************************
+***	3. Creating Instrumental Variables (AK DoFiles) and saving datasets	***
+***************************************************
 
 **This section makes the instruments: this is code taken from AK91s Online Dofiles for their Table V output
 

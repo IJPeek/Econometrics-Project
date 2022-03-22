@@ -2,13 +2,13 @@
 Author: Group 14
 Date created: 15/02/22
 
-Description: Running the IV 
+Description: This do file runs the IV specifications and carries out the tests on the specification that we refer to in our paper
 
 Last edited: 22/03/2022
 
 */
 ********************************************************************************
-//Content
+//Contents
 				//1. 2SLS Estimation and White Tests for Heteroskedasticity
 				//2. Tests for under and overidentifying restriction
 				//3. Test of weak instruments 
@@ -21,28 +21,26 @@ ivregress 2sls lwklywge yr20-yr28 ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr22
 ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 
-	- We won't run these as the command does not include all the tests that we want to know about
-	- Also note that when using ivreg2 there is no need to state the included instruments i.e. yr20-yr28 within the brackets, and so to improve computational efficiency we will remove these
+	- We won't run these as the ivregress command does not include all the tests that we want to know about
+	- W also note that when using ivreg2 there is no need to state the included instruments i.e. yr20-yr28 within the brackets, and so to improve computational efficiency we will remove these
 */
 
-********** Reressions that we want to do using ivreg2 instead **********
 
 // Loading data
 use "$temp/QOB.dta", clear
 
-//Install ivreg2 
-
+//Install Necessary programmes 
+* NOTE: THIS PART IS ONLY NEEDED THE FIRST TIME THE DOFILE IS RUN.
 ssc install ivreg2
 ssc install ivhettest
 ssc install outreg2
-
+ssc install weakivtest
+ssc install avar
+ssc install ranktest
 
 **********************************************************************************
 **~ 1. 2SLS Estimation and White Tests for Heteroskedasticity			**********
 **********************************************************************************
-
-
-//Note that for specifications 2 and 4 we partial out ageq and agesq 
 
 **Specification 1**
 ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
@@ -81,7 +79,7 @@ outreg2 using stata_outputs.doc, append ctitle(Specification 4: 2SLS robust)
 
 
 ********************************************************************************
-**				2. Tests for under and overidentifying restriction			  **
+**				2. Tests for under and overidentifying restrictions			  **
 ********************************************************************************
 
 
@@ -292,22 +290,18 @@ Overidenfication test of all instruments
 	- The test statistics for each of these specifications are relatively small, meaning that the p-values are large (64-82%). The probability that we observe the data we do under the model assumptions (e.g. orthogonality, parameter heterogeneity) are high, so we cannot reject the null hypothesis of all these assumptions, particular the exclusion restriction
 	- This suggests that are model assumptions are good (yay)
 */		
-********************************************************************************
-**						3. Test of weak instruments							 ***
-********************************************************************************
-******************************************
-**	 Install Necessary Packages  		**
-******************************************
+
+**************************************************
+**********	3. Test of weak instruments	**********
+**************************************************
+
 /*
-NOTES: THIS SUBSECTION IS ONLY NEEDED THE FIRST TIME THE DOFILE IS RUN.
-		White's Test for Heteroskedasticity must be conducted before Olea & Pflueger's Test for Weak Instruments is run.  See "2.1 White het test"
+White's Test for Heteroskedasticity must be conducted before Olea & Pflueger's Test for Weak Instruments is run.  See "2.1 White het test"
 
 In the Author's own words:
 "The Stata module WEAKIVTEST implements the weak instrument test of Montiel Olea and Pflueger (Journal of Business and Economic Statistics, 2013) that is robust to heteroskedasticity, serial correlation, and clustering." (Pflueger, 2015)
 */
-ssc install weakivtest
-ssc install avar
-ssc install ranktest
+
 
 **********************************************
 **  Olea/Pflueger test for Weak Instruments	**
@@ -315,7 +309,7 @@ ssc install ranktest
 **********************************************
 
 **Specification 1**
-ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 weakivtest  
 putexcel set $output/MPSpec1.xlsx, replace
 putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 1"
@@ -341,7 +335,7 @@ putexcel E10 = (r(c_TSLS_30))
 putexcel G10 = (r(c_LIML_30))
 
 **Specification 2**
-ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 weakivtest
 putexcel set $output/MPSpec2.xlsx, replace
 putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 2"
@@ -367,7 +361,7 @@ putexcel E10 = (r(c_TSLS_30))
 putexcel G10 = (r(c_LIML_30))
 
 **Specification 3**
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 weakivtest
 putexcel set $output/MPSpec3.xlsx, replace
 putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 3"
@@ -393,7 +387,7 @@ putexcel E10 = (r(c_TSLS_30))
 putexcel G10 = (r(c_LIML_30))
 
 **Specification 4**
-ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
 weakivtest
 putexcel set $output/MPSpec4.xlsx, replace
 putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 4"
@@ -418,3 +412,6 @@ putexcel B10 = "tau=30%"
 putexcel E10 = (r(c_TSLS_30))
 putexcel G10 = (r(c_LIML_30))
 
+*
+*
+*** END OF DO FILE ***
