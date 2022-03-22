@@ -10,11 +10,13 @@
 	
 	// 1. Import of the AK91 Dataset
 		// This dofile imports, renames, labels and saves the Angrist Krueger 1991 datasets
-	 run "$dofile\1. Data import and cleaning.do"
+		clear
+	 run "$dofile/1. Data import and cleaning.do"
 	 
-	// 2. 
+	// 2. Tests on Specifications and iV Identifying Assumptions
+		//This dofile generates 2SLS estimates and perform the tests for: heteroskedasticity, test on restrictions: overidentifying and underidentifying restrictions and weak instruments
 	
-	
+	run "$dofile/2. Tests on Specifications and iV Identifying Assumptions.do"
 	
 	
 	

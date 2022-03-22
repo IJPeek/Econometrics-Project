@@ -1,44 +1,18 @@
 /*
-Author: Will Whiteley
-Date created: 15/02/2022
+Author: Group 14
+Date created: 15/02/22
 
-Description: Tests for both over and under-identifying assumptions of the 2SLS specifications 
-				- Note use of partial option for specs 2 and 4 where there are concerns with colinnearity. ageq and ageqsq are the variables partialled out
-				- Also note when interpreting results that there is heteroskedasticity in specifications 3 and 4 and so these results are preferred
-				- Create output using putexcel commands, becasue 'asdoc' and 'outreg' do not work for this type of result 
+Description: Running the IV 
 
-
-Last edited: 10/03/2022
+Last edited: 22/03/2022
 
 */
-
-
-********************************************************************
-******************************* PREP *******************************
-********************************************************************
-
-
-*** Run setup do file ***
-	* Edit this out as needed and depending on user
-run "C:\Users\willi\OneDrive\Attachments\Documents\GitHub\Econometrics-Project\Dofiles\_setup_WW.do"
-
-*** Get cleaned and named dataset ***
-use "$temp/QOB.dta", clear 
-
-*** Run the file to create instrumental variables ***
-run "$dofile/1.2 Creating Instrumental variables.do"
-
-* Restricting the observations just to the cohort that we want to consider for Table V analysis
-keep if cohort>30.00 & cohort <30.40
-
-* Installing the packages that are required
-*** NOTE: This will only be necessary the first time the code is run on any system
-ssc install ivreg2
-ssc install outreg2
-
-**********************************************************************
-*************************** IV regressions ***************************
-**********************************************************************
+********************************************************************************
+//Content
+				//1. 2SLS Estimation and White Tests for Heteroskedasticity
+				//2. Tests for under and overidentifying restriction
+				//3. Test of weak instruments 
+********************************************************************************
 
 /*
 *** These are the regressions specified by the authors (in lowercase)***
@@ -52,6 +26,64 @@ ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocen
 */
 
 ********** Reressions that we want to do using ivreg2 instead **********
+
+// Loading data
+use "$temp/QOB.dta", clear
+
+//Install ivreg2 
+
+ssc install ivreg2
+ssc install ivhettest
+ssc install outreg2
+
+
+**********************************************************************************
+**~ 1. 2SLS Estimation and White Tests for Heteroskedasticity			**********
+**********************************************************************************
+
+
+//Note that for specifications 2 and 4 we partial out ageq and agesq 
+
+**Specification 1**
+ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+outreg2 using stata_outputs.doc, replace ctitle(Specification 1: 2SLS)
+
+//Test for heteroskedasticity
+ivhettest
+
+**Specification 2**
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+outreg2 using stata_outputs.doc, append ctitle(Specification 2: 2SLS)
+
+//Test for heteroskedasticity
+ivhettest
+
+**Specification 3**
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+
+//Test for heteroskedasticity
+ivhettest
+
+//We find heteroskedasticity so we report the robust version in our results
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust
+outreg2 using stata_outputs.doc, append ctitle(Specification 3: 2SLS robust)
+
+
+**Specification 4**
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329)
+
+//Test for heteroskedasticity
+ivhettest
+
+//We find heteroskedasticity so we report the robust version in our results. For spec 4 we use the partial out option to avoid collinearity problems. 
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329), robust partial(ageq ageqsq)
+outreg2 using stata_outputs.doc, append ctitle(Specification 4: 2SLS robust)
+
+
+********************************************************************************
+**				2. Tests for under and overidentifying restriction			  **
+********************************************************************************
+
 
 *********************
 *** Spec 1 - Base ***
@@ -247,9 +279,9 @@ putexcel D22 = (e(jdf))
 putexcel B23 = "NOTE: Partial option used for ageq and agesq"
 
 
-**********************************************************************
-**************************** Conclusions *****************************
-**********************************************************************
+********************************
+********** Conclusions ********
+********************************
 /*
 Test for under-identifying assumptions
 	- The test statistics for each of these specifications are large, so the probability that we observe the data we do under the Null of underidentification is very low (either 0% or 2.1%). This means that we reject the null hypothesis and say that
@@ -260,3 +292,129 @@ Overidenfication test of all instruments
 	- The test statistics for each of these specifications are relatively small, meaning that the p-values are large (64-82%). The probability that we observe the data we do under the model assumptions (e.g. orthogonality, parameter heterogeneity) are high, so we cannot reject the null hypothesis of all these assumptions, particular the exclusion restriction
 	- This suggests that are model assumptions are good (yay)
 */		
+********************************************************************************
+**						3. Test of weak instruments							 ***
+********************************************************************************
+******************************************
+**	 Install Necessary Packages  		**
+******************************************
+/*
+NOTES: THIS SUBSECTION IS ONLY NEEDED THE FIRST TIME THE DOFILE IS RUN.
+		White's Test for Heteroskedasticity must be conducted before Olea & Pflueger's Test for Weak Instruments is run.  See "2.1 White het test"
+
+In the Author's own words:
+"The Stata module WEAKIVTEST implements the weak instrument test of Montiel Olea and Pflueger (Journal of Business and Economic Statistics, 2013) that is robust to heteroskedasticity, serial correlation, and clustering." (Pflueger, 2015)
+*/
+ssc install weakivtest
+ssc install avar
+ssc install ranktest
+
+**********************************************
+**  Olea/Pflueger test for Weak Instruments	**
+**      & Generating Descriptive Tables  	**
+**********************************************
+
+**Specification 1**
+ivreg2 lwklywge yr20-yr28 (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+weakivtest  
+putexcel set $output/MPSpec1.xlsx, replace
+putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 1"
+putexcel B2 = "Effective F Statistic:"
+putexcel B3 = (r(F_eff))
+putexcel B4 = "Confidence level alpha"
+putexcel C4 = (r(level))
+putexcel B5 = "Critical Values"
+putexcel E5 = "TSLS"
+putexcel G5 = "LIML"
+putexcel B6 = "% of Worst-Case Bias"
+putexcel B7 = "tau=5%"
+putexcel E7 = (r(c_TSLS_5))
+putexcel G7 = (r(c_LIML_5))
+putexcel B8 = "tau=10%"
+putexcel E8 = (r(c_TSLS_10))
+putexcel G8 = (r(c_LIML_10))
+putexcel B9 = "tau=20%"
+putexcel E9 = (r(c_TSLS_20))
+putexcel G9 = (r(c_LIML_20))
+putexcel B10 = "tau=30%"
+putexcel E10 = (r(c_TSLS_30))
+putexcel G10 = (r(c_LIML_30))
+
+**Specification 2**
+ivreg2 lwklywge yr20-yr28 ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+weakivtest
+putexcel set $output/MPSpec2.xlsx, replace
+putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 2"
+putexcel B2 = "Effective F Statistic:"
+putexcel B3 = (r(F_eff))
+putexcel B4 = "Confidence level alpha"
+putexcel C4 = (r(level))
+putexcel B5 = "Critical Values"
+putexcel E5 = "TSLS"
+putexcel G5 = "LIML"
+putexcel B6 = "% of Worst-Case Bias"
+putexcel B7 = "tau=5%"
+putexcel E7 = (r(c_TSLS_5))
+putexcel G7 = (r(c_LIML_5))
+putexcel B8 = "tau=10%"
+putexcel E8 = (r(c_TSLS_10))
+putexcel G8 = (r(c_LIML_10))
+putexcel B9 = "tau=20%"
+putexcel E9 = (r(c_TSLS_20))
+putexcel G9 = (r(c_LIML_20))
+putexcel B10 = "tau=30%"
+putexcel E10 = (r(c_TSLS_30))
+putexcel G10 = (r(c_LIML_30))
+
+**Specification 3**
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+weakivtest
+putexcel set $output/MPSpec3.xlsx, replace
+putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 3"
+putexcel B2 = "Effective F Statistic:"
+putexcel B3 = (r(F_eff))
+putexcel B4 = "Confidence level alpha"
+putexcel C4 = (r(level))
+putexcel B5 = "Critical Values"
+putexcel E5 = "TSLS"
+putexcel G5 = "LIML"
+putexcel B6 = "% of Worst-Case Bias"
+putexcel B7 = "tau=5%"
+putexcel E7 = (r(c_TSLS_5))
+putexcel G7 = (r(c_LIML_5))
+putexcel B8 = "tau=10%"
+putexcel E8 = (r(c_TSLS_10))
+putexcel G8 = (r(c_LIML_10))
+putexcel B9 = "tau=20%"
+putexcel E9 = (r(c_TSLS_20))
+putexcel G9 = (r(c_LIML_20))
+putexcel B10 = "tau=30%"
+putexcel E10 = (r(c_TSLS_30))
+putexcel G10 = (r(c_LIML_30))
+
+**Specification 4**
+ivreg2 lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ= qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
+weakivtest
+putexcel set $output/MPSpec4.xlsx, replace
+putexcel B1 = "Montiel-Pflueger Robust Weak Instrument Test For Specification 4"
+putexcel B2 = "Effective F Statistic:"
+putexcel B3 = (r(F_eff))
+putexcel B4 = "Confidence level alpha"
+putexcel C4 = (r(level))
+putexcel B5 = "Critical Values"
+putexcel E5 = "TSLS"
+putexcel G5 = "LIML"
+putexcel B6 = "% of Worst-Case Bias"
+putexcel B7 = "tau=5%"
+putexcel E7 = (r(c_TSLS_5))
+putexcel G7 = (r(c_LIML_5))
+putexcel B8 = "tau=10%"
+putexcel E8 = (r(c_TSLS_10))
+putexcel G8 = (r(c_LIML_10))
+putexcel B9 = "tau=20%"
+putexcel E9 = (r(c_TSLS_20))
+putexcel G9 = (r(c_LIML_20))
+putexcel B10 = "tau=30%"
+putexcel E10 = (r(c_TSLS_30))
+putexcel G10 = (r(c_LIML_30))
+

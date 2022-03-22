@@ -14,17 +14,9 @@ Sections.
 **						1. Import and rename								**
 ******************************************************************************
 
-
-
+// Imports raw data from https://economics.mit.edu/faculty/angrist/data1/data/angkru1991 
+clear
 infile v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 v24 v25 v26 v27 using "$raw/QOB.raw", clear
-save "$raw/QOB.dta", replace
-
-// a larger dataset on their website use "$raw/NEW7080.dta", clear
-
-
-foreach data in NEW7080 QOB{
-use "$raw/`data'.dta", clear
-
 
 //These are from the AK website RENAMING THE FILE:
 rename v1 AGE
@@ -198,7 +190,6 @@ keep if cohort>30.00 & cohort<30.40 // This is the cohort we are considering in 
 rename _all, lower
 
 
-save "$temp/`data'.dta", replace
-}
+save "$temp/QOB.dta", replace
 
 
