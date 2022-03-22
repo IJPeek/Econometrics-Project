@@ -1,10 +1,6 @@
 /*
-Author: Marianne Gregory
-Date created: 15/02/22
+Description: 2. IV for Table V cohort 
 
-Description: IV for Table V cohort 
-
-Last edited: 
 
 */
 ********************************************************************************
@@ -15,7 +11,7 @@ Last edited:
 
 
 //create all the instruments and loading data
-run "$dofile/1.2 Creating Instrumental variables.do"
+use "$temp/`data'.dta"
 
 
 //select correct cohort//

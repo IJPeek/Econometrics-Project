@@ -202,8 +202,8 @@ putexcel D5 = `r(sd)'
  //FULLER1 mean 1.16 median 1.23
  
  
+gr combine $output/Monte_Carlos/MC_Many_LIML-STRONG_10.gph $output/Monte_Carlos/MC_Many_FULLER1-STRONG_10.gph $output/Monte_Carlos/MC_Many_LIML-Weaker_10.gph $output/Monte_Carlos/MC_Many_FULLER1-Weaker_10.gph, col(2) title("LIML and FULL  Monte Carlos 10 instruments") saving(charts1, replace)
+graph export "$output/MC 10 LIML vs FULL.pdf", replace
  
 
-gr combine $output/Monte_Carlos/MC_Many_LIML-STRONG_100.gph $output/Monte_Carlos/MC_Many_FULLER1-STRONG_100.gph $output/Monte_Carlos/MC_Many_LIML-Weaker_100.gph $output/Monte_Carlos/MC_Many_FULLER1-Weaker_100.gph, col(2) title("FULL Monte Carlos increasing instruments") saving(charts1, replace)
-graph export "$output/MC 10 LIML vs FULL.pdf", replace
   

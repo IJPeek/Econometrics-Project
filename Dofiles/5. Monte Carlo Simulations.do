@@ -48,6 +48,7 @@ gen y=.
 gen x=.
 gen u=.
 
+
 cap  program drop regIV
 program regIV, rclass 
 tempname sim
@@ -259,7 +260,7 @@ putexcel E1="Weakest Instrument"
 putexcel E3 = `r(mean)'
 putexcel E5 = `r(sd)'
 
- histogram biv, freq normal title("Weakest Instrument") xscale(range(-2 2)) xlabel(-2[0.2]2)
+ histogram biv, freq normal title("Weakest Instrument") 
  graph save "$output/Monte_Carlos/MC_2SLS_Weakest.gph", replace
  
 //xscale(range(5000 10000)) xlabel(5000[1000]10000)
@@ -386,6 +387,8 @@ gen z = 5*runiform()
 gen y=.
 gen x=.
 gen u=.
+
+
 
 cap  program drop regIV
 program regIV, rclass 
