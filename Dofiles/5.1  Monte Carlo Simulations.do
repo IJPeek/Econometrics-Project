@@ -1,27 +1,35 @@
 /* 
-Author: Isabelle Peek
-Description: Monte Carlo Simulation for IV 
-// Source : https://learneconometrics.com/pdf/MCstata/MCstata.pdf
+Description: Monte Carlo Simulation for OLS, 2SLS, LIML and FULL
+// Code largely based on : https://learneconometrics.com/pdf/MCstata/MCstata.pdf
 
 Content
 
-1. Data Generating Process Set up
 
-One Instrument
-2. 2SLS
-3. LIML
+		One Instrument
+1.1 2SLS- STRONG, gam=1, Instruments=1
+1.2 2SLS- Weaker, gam=0.1, Instruments=1
+1.3 2SLS- Weakesty, gam=0.01, Instruments=1
+2.1 LIML- STRONG, gam=1, Instruments=1
+2.2 LIML- Weaker, gam=0.1, Instruments=1
+2.3 LIML- Weakest, gam=0.01, Instruments=1
+3. GRAPHS COMBINED
 
 */
 
 *******************************************************************************
-******* 		Data Generating Process Set up
+******* 	1.1 2SLS- STRONG, gam=1, Instruments=1
 *******************************************************************************
-
-
-**			2SLS- STRONG, gam=1, Instruments=1
-
+		/* IMPORTANT NOTE ON ALL THE FOLLOWING SUB SECTIONS FOR MONTE CARLOS
+		 All the following sections have the same sturcture as this first section.
+		 The memory of stata has to be cleared completely including the program of STATA generates an error message. Hence the simulatuion program is refined in each simulation.
+		 
+		 Only this first subsection is heavily annontated
+		 
+		 
+		 Historgams have been made for n=1000 and n=10000 by runing these subsections with the relevant observation. The MSE is calculated in excel but the output of the mean, median and sd of the distribution is exported to excel using put excel.
+*/
 clear all
-// Setting Macros. Number of observations
+// Setting Macros. Set the number of observations and simualations
 global nobs = 10000
 global nmc = 1000
 
@@ -31,10 +39,10 @@ set seed 10101
  
 // Setting our paramaters for the DGP
 
-	 // Reduced form
+	 // Reduced form coeffivients are set
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  scalar gam = 1 /* instrument strength */
@@ -42,13 +50,13 @@ set seed 10101
  scalar alpha=.05 /* test size */
 
 
-// We generate our data here
+// We generate our data here, Z exogenously set
 gen z = 5*runiform()
 gen y=.
 gen x=.
 gen u=.
 
-
+// setting the program to simulate the estimates
 cap  program drop regIV
 program regIV, rclass 
 tempname sim
@@ -60,6 +68,8 @@ forvalues i = 1/$nmc {
 replace u = rnormal(0,sigma)
 replace x = gam*z+rho*u+rnormal(0,sige) 
 replace y=slope*x+u
+
+//OLS
 reg y x
 scalar b = _b[x]
 scalar se = _se[x]
@@ -67,6 +77,7 @@ scalar lb = b - se*invttail(e(df_r),alpha/2)
 scalar ub = b + se*invttail(e(df_r),alpha/2)
 scalar pv = slope<ub & slope>lb
 
+//2SLS
 	ivreg y (x=z)
 		scalar biv = _b[x]
 		scalar seiv = _se[x]
@@ -83,7 +94,8 @@ end
  use results, clear
  summarize b
  
- 
+// The project uses Mean Squared Errors as one method of analysis, these are calculated in the output excel files by Bias^2 +Variance
+
  putexcel set $output/Monte_Carlos.xlsx, modify
 putexcel C1 = "Strongest Instrument"
 putexcel B2 = "OLS Mean"
@@ -93,28 +105,30 @@ putexcel B5 = "2SLS SD"
 
 putexcel D1 = "Weaker Instument"
 
-// OLS output
+// OLS output for MSE
 putexcel C2 = `r(mean)'
 putexcel C4 = `r(sd)'
 
  summarize biv
 
-// 2SLS output
+// 2SLS output for MSE
 putexcel C3 = `r(mean)'
 putexcel C5 = `r(sd)'
  
- 
- 
+ // Another method of analysis is looking at the Histgrams
+ // Saving Histograms
  histogram biv, freq normal title("Strong Instrument ") yscale(range(0 80)) 
  graph save "$output/Monte_Carlos/MC_2SLS_Strong.gph", replace 
  
  histogram b, freq normal title("OLS Coefficients")  yscale(range(0 80))
  graph save "$output/Monte_Carlos/MC_OLS.gph", replace
  
-**			2SLS- Weaker, gam=0.1, Instruments=1
+ 
 *******************************************************************************
-******* 		Weaker Instruments
+**		1.2	2SLS- Weaker, gam=0.1, Instruments=1
 *******************************************************************************
+
+
 
 clear all
 // Setting Macros. Number of observations
@@ -130,7 +144,7 @@ set seed 10101
 	 // Reduced form
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  scalar gam = 0.1 /* instrument strength */
@@ -187,11 +201,10 @@ putexcel D5 = `r(sd)'
  histogram biv, freq normal title("Weaker Instrument ")  yscale(range(0 80))
  graph save "$output/Monte_Carlos/MC_2SLS_Weak.gph", replace
  
- 
-**			2SLS- Weaker, gam=0.01, Instruments=1
 *******************************************************************************
-******* 		Weakest Instruments
+**		1.3 2SLS- Weakest, gam=0.01, Instruments=1							***
 *******************************************************************************
+** Weakest Instruments
 
 clear all
 // Setting Macros. Number of observations
@@ -207,7 +220,7 @@ set seed 10101
 	 // Reduced form
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  scalar gam = 0.01 /* instrument strength */
@@ -270,11 +283,14 @@ graph export "$output/Monte_Carlos/2SLS Bias Graphs.pdf", replace
 
 
 ********************************************************************************
-**********						LIML and FULL					****************
+**********				2		LIML and FULL					****************
 ********************************************************************************
 
-**			LIML- STRONG, gam=1, Instruments=1
-		//Strongest
+
+********************************************************************************
+********** 		2.1 LIML- STRONG, gam=1, Instruments=1
+//Strongest
+
 clear all
 // Setting Macros. Number of observations
 global nobs = 10000
@@ -289,7 +305,7 @@ set seed 10101
 	 // Reduced form
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  scalar gam = 1 /* instrument strength */
@@ -304,7 +320,7 @@ gen x=.
 gen u=.
 
 cap  program drop regIV
-program regIV, rclass 
+program regIV, eclass 
 tempname sim
 
 //Postfile saves our estimation output in Stata's memory
@@ -359,10 +375,14 @@ putexcel C11 = `r(p50)'
   graph save "$output/Monte_Carlos/MC_FULLER1-Strong.gph", replace
  
 ************************************************************************
-**			LIML- STRONG, gam=0.1, Instruments=1
+**			2.2 LIML- Weaker, gam=0.1, Instruments=1
+************************************************************************
+
+
+
 clear all
 // Setting Macros. Number of observations
-global nobs = 10000
+global nobs = 1000
 global nmc = 1000
 
 // Setting out seed for randomisation
@@ -374,7 +394,7 @@ set seed 10101
 	 // Reduced form
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  scalar gam = 0.1 /* instrument strength */
@@ -391,7 +411,7 @@ gen u=.
 
 
 cap  program drop regIV
-program regIV, rclass 
+program regIV, eclass 
 tempname sim
 
 //Postfile saves our estimation output in Stata's memory
@@ -436,8 +456,11 @@ putexcel D11 = `r(p50)'
  histogram bful, freq normal title("FULL- Weaker, K2=1 ")  yscale(range(0 80))
   graph save "$output/Monte_Carlos/MC_FULLER1-Weaker.gph", replace
  
- ************************************************************************
-**			LIML- STRONG, gam=0.01, Instruments=1
+************************************************************************
+**			2.3 LIML- Weakest, gam=0.01, Instruments=1
+************************************************************************
+
+
 clear all
 // Setting Macros. Number of observations
 global nobs = 10000
@@ -452,7 +475,7 @@ set seed 10101
 	 // Reduced form
  scalar slope = 1 /* regression slope */
  scalar sigma = 1 /* error in y */
- scalar sige = 0 /* measurement error in e */
+ scalar sige = 0.2 /* measurement error in e */
  
      // Instrumental Variables: 
  scalar gam = 0.01 /* instrument strength */
@@ -467,7 +490,7 @@ gen x=.
 gen u=.
 
 cap  program drop regIV
-program regIV, rclass 
+program regIV, eclass 
 tempname sim
 
 //Postfile saves our estimation output in Stata's memory
@@ -509,6 +532,9 @@ putexcel E11 = `r(p50)'
   histogram bful, freq normal title("FULL- Weakest, K2=1 ")  yscale(range(0 80))
   graph save "$output/Monte_Carlos/MC_FULLER1-Weakest.gph", replace
  
+ 
+ 
+ // 3. GRAPHS COMBINED
 gr combine  $output/Monte_Carlos/MC_LIML-Strong.gph $output/Monte_Carlos/MC_LIML-Weaker.gph $output/Monte_Carlos/MC_LIML-Weakest.gph, col(2) title("LIML Monte Carlos with weak instruments") saving(charts1, replace)
 graph export "$output/Monte_Carlos/LIML_Weak_Instruments_Graphs.pdf", replace
  
