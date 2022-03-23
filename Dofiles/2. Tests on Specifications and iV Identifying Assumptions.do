@@ -15,7 +15,7 @@ ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocen
 ivregress 2sls lwklywge yr20-yr28 race married smsa neweng midatl enocent wnocent soatl esocent wsocent mt ageq ageqsq (educ = qtr120-qtr129 qtr220-qtr229 qtr320-qtr329 yr20-yr28)
 
 	- We won't run these as the ivregress command does not include all the tests that we want to know about
-	- W also note that when using ivreg2 there is no need to state the included instruments i.e. yr20-yr28 within the brackets, and so to improve computational efficiency we will remove these
+	- We also note that when using ivreg2 there is no need to state the included instruments i.e. yr20-yr28 within the brackets, and so to improve computational efficiency we will remove these
 */
 
 
@@ -32,7 +32,7 @@ ssc install avar
 ssc install ranktest
 
 **********************************************************************************
-**~ 1. 2SLS Estimation and White Tests for Heteroskedasticity			**********
+******** 1. 2SLS Estimation and White Tests for Heteroskedasticity		**********
 **********************************************************************************
 
 **Specification 1**
@@ -270,9 +270,8 @@ putexcel D22 = (e(jdf))
 putexcel B23 = "NOTE: Partial option used for ageq and agesq"
 
 
-********************************
-********** Conclusions ********
-********************************
+
+*** Conclusions ***
 /*
 Test for under-identifying assumptions
 	- The test statistics for each of these specifications are large, so the probability that we observe the data we do under the Null of underidentification is very low (either 0% or 2.1%). This means that we reject the null hypothesis and say that
