@@ -1,18 +1,11 @@
 /*
-Author: Group 14
-Date created: 15/02/22
-
 Description: This do file runs the IV specifications and carries out the tests on the specification that we refer to in our paper
 
-Last edited: 22/03/2022
-
+Sections:
+	1. 2SLS Estimation and White Tests for Heteroskedasticity
+	2. Tests for under and overidentifying restriction
+	3. Test of weak instruments
 */
-********************************************************************************
-//Contents
-				//1. 2SLS Estimation and White Tests for Heteroskedasticity
-				//2. Tests for under and overidentifying restriction
-				//3. Test of weak instruments 
-********************************************************************************
 
 /*
 *** These are the regressions specified by the authors (in lowercase)***
