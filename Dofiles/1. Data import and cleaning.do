@@ -1,6 +1,6 @@
 /*
 
-Description: This dofile imports, renames, labels and saves the Angrist Krueger 1991 datasets.
+Description: This dofile imports, renames, labels and saves the Angrist Krueger 1991 datasets. This includes generating the IV's that are used, and then restricting the dataset to only the cohort that we are working with
 
 Sections:
 	1. Import and rename 
@@ -11,7 +11,7 @@ Sections:
 
 
 ******************************************
-********** 1. Import and rename **********							**
+********** 1. Import and rename **********
 ******************************************
 
 // Imports raw data from https://economics.mit.edu/faculty/angrist/data1/data/angkru1991 
@@ -84,9 +84,9 @@ label var CENSUS "Which census year the data was collected from, 1970 or 1980"
 label var AGEQ "Age, including months eg age 40.24"
 
 
-***************************************************
+***************************************************************************
 ***	3. Creating Instrumental Variables (AK DoFiles) and saving datasets	***
-***************************************************
+***************************************************************************
 
 **This section makes the instruments: this is code taken from AK91s Online Dofiles for their Table V output
 
@@ -192,4 +192,7 @@ rename _all, lower
 
 save "$temp/QOB.dta", replace
 
+*
+*
+*** END OF DO FILE ***
 
