@@ -10,36 +10,35 @@
 	
 	// 1. Import of the AK91 Dataset
 		// This dofile imports, renames, labels and saves the Angrist Krueger 1991 datasets
-		clear
+clear
+
 	 run "$dofile/1. Data import and cleaning.do"
 	 
 	// 2. Tests on Specifications and iV Identifying Assumptions
 		//This dofile generates 2SLS estimates and perform the tests for: 	heteroskedasticity, test on restrictions: overidentifying and underidentifying restrictions and weak instruments
 	
-	run "$dofile/2. Tests on Specifications and iV Identifying Assumptions.do"
+	// This dofile sometimes will not run remotely, it will run if you open it and run it directly
+	run "$dofile/2. Tests on Specifications and IV Identifying Assumptions.do"
 	
 	// 3. Calculating our point estimates robust to weak instruments
 	
-	run "$dofiles/3.1 LIML estimations tableV.do"
-	run "$dofiles/3.2 FULL.do"
-	run "$dofiles/3.3 OLS Output.do"
+	run "$dofile/3. Point Estimates.do"
+	
 	
 	// 4. Confidence intervals robust to weak instruments
 	
-	run "$dofiles/4. Confidence sets.do" 
-	
-	
+	run "$dofile/4. Confidence sets robust to weak instruments.do" 
 	
 	// 5. Monte Carlos
 	
 	// For one instrument
-	run "$dofiles/5.1  Monte Carlo Simulations.do"
+	run "$dofile/5.1  Monte Carlo Simulations.do"
 	
 	// For many instruments 
-	run "$dofiles/5.2 Monte Carlo Simulations- Many 2SLS.do"
+	run "$dofile/5.2 Monte Carlo Simulations- Many 2SLS.do"
 	
-	run "5.3 Monte Carlos LIML FULL, Many Instruments.do"
+	run "$dofile/5.3 Monte Carlos LIML FULL, Many Instruments.do"
 		
-		*/
+
 		
 
